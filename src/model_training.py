@@ -1,12 +1,12 @@
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.preprocessing.text import Tokenizer # type: ignore
+from tensorflow.keras.preprocessing.sequence import pad_sequences # type: ignore
+from tensorflow.keras.models import Sequential # type: ignore
+from tensorflow.keras.layers import Embedding, LSTM, Dense # type: ignore
+from tensorflow.keras.callbacks import EarlyStopping # type: ignore
+from tensorflow.keras.utils import to_categorical # type: ignore
 
 
 def train_model(processed_data_path, model_path):
@@ -20,7 +20,7 @@ def train_model(processed_data_path, model_path):
     X_seq = tokenizer.texts_to_sequences(X)
     X_pad = pad_sequences(X_seq, maxlen=100)
 
-    y_cat = to_categorical(y)
+    y_cat = to_categorical(y, num_classes=2)
     X_train, X_test, y_train, y_test = train_test_split(X_pad, y_cat, test_size=0.2, random_state=42)
 
     model = Sequential()

@@ -1,9 +1,9 @@
 import pandas as pd
 import os
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 from sklearn.metrics import classification_report
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer # type: ignore
+from tensorflow.keras.preprocessing.sequence import pad_sequences # type: ignore
 
 
 def evaluate_model(processed_data_path, model_path):
