@@ -2,31 +2,6 @@
 
 This project is designed to analyze the sentiment of user tweets, aiming to support a broader analysis of user motivations on Twitter. The project includes data preprocessing, model training, and model evaluation using an LSTM (Long Short-Term Memory) model.
 
-## Project Structure
-
-```
-user-sentiment-model
-├── .venv
-├── data
-│   ├── processed
-│   │   ├── most-active-users.png
-│   │   ├── sentiment-distribution.png
-│   │   ├── sentiment-time-distribution.png
-│   │   ├── training_processed.csv
-│   ├── raw
-│   │   └── training.1600000.processed.noemoticon.csv
-├── models
-├── notebooks
-│   └── data_exploration.ipynb
-├── src
-│   ├── data_processing.py
-│   ├── model_evaluation.py
-│   ├── model_training.py
-│   └── main.py
-├── requirements.txt
-└── setup.py
-```
-
 ## Setup
 
 ### Prerequisites
@@ -56,7 +31,7 @@ user-sentiment-model
 
 ### Directory Setup
 
-- Included data set file (`training.1600000.processed.noemoticon.csv`) obtained from  in the `data/raw` directory.
+- Included data set file (`training.1600000.processed.noemoticon.csv`) in the `data/raw` directory.
 - Processed data, models, and visualizations will be saved in their respective directories during the pipeline execution.
 
 ## Usage
