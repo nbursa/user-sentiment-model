@@ -1,6 +1,7 @@
 # User Sentiment Model
 
-The primary goal of this project is to train a machine learning model designed to analyze the sentiment of user tweets, aiming to support a broader analysis of user motivations on Twitter. The project includes data preprocessing, model training, and model evaluation using an LSTM (Long Short-Term Memory) model.
+Project goal is to train a machine learning model designed to analyze the sentiment of user tweets, aiming to support a broader analysis of user motivations on Twitter. The project includes data preprocessing, model training, and model evaluation using an LSTM (Long Short-Term Memory) model.
+
 
 ## Setup
 
