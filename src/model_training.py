@@ -41,7 +41,7 @@ def train_model(processed_data_path, model_base_name="sentiment_model", version=
     early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
     # Train the model
-    model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=128, callbacks=[early_stopping])
+    model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=1, batch_size=128, callbacks=[early_stopping])
 
     # Generate versioned model path
     date = datetime.now().strftime("%Y%m%d_%H%M%S")
