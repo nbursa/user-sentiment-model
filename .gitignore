@@ -1,4 +1,6 @@
 .venv/
 data/
+data/processed/
+data/raw/
 .history/
 .idea/
