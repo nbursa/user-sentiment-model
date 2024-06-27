@@ -8,10 +8,12 @@ from tensorflow.keras.layers import Embedding, LSTM, Dense # type: ignore
 from tensorflow.keras.callbacks import EarlyStopping # type: ignore
 from tensorflow.keras.utils import to_categorical # type: ignore
 from datetime import datetime
+import matplotlib.pyplot as plt
 import joblib
 
+
 def train_model(processed_data_path, model_base_name="sentiment_model", version="",
-                embedding_dim=128, lstm_units=128, dropout_rate=0.2, epochs=10, batch_size=128):
+                embedding_dim=128, lstm_units=128, dropout_rate=0.2, epochs=1, batch_size=128):
 
     recurrent_dropout_rate = 0.2
     max_words = 10000
@@ -37,11 +39,11 @@ def train_model(processed_data_path, model_base_name="sentiment_model", version=
     X_pad = pad_sequences(X_seq, maxlen=max_len)
     print(f"Tokenization and padding completed. Shape of X_pad: {X_pad.shape}")
 
-    print("Saving tokenizer...")
     # Save the tokenizer
-    tokenizer_path = f'models/{model_base_name}_tokenizer_{version}_{datetime.now().strftime("%d%m%Y%H%M%S")}.joblib'
+    date = datetime.now().strftime("%d%m%Y%H%M%S")
+    tokenizer_path = f'models/{model_base_name}_tokenizer_{version}_{date}.joblib'
+    print("Saving tokenizer to", tokenizer_path)
     joblib.dump(tokenizer, tokenizer_path)
-    print(f"Tokenizer saved to {tokenizer_path}")
 
     print("Converting sentiment labels to categorical...")
     # Convert 'y' to categorical
@@ -72,12 +74,10 @@ def train_model(processed_data_path, model_base_name="sentiment_model", version=
     early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
 
     print("Training the model...")
-    # Train the model
     history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=epochs, batch_size=batch_size, callbacks=[early_stopping])
     print("Model training completed.")
 
     # Generate versioned model path
-    date = datetime.now().strftime("%d%m%Y%H%M%S")
     model_path = f"models/{model_base_name}_{version}_{date}_embedding_dim={embedding_dim}_lstm_units={lstm_units}_dropout_rate={dropout_rate}_epochs={epochs}_batch_size={batch_size}.keras"
 
     print(f"Saving the model to {model_path}...")
@@ -85,4 +85,40 @@ def train_model(processed_data_path, model_base_name="sentiment_model", version=
     model.save(model_path)
     print("Model saved to", model_path)
 
-    return history
+    # Save the training history
+    history_path = f'models/{model_base_name}_history_{version}_{date}.csv'
+    history_df = pd.DataFrame(history.history)
+    history_df.to_csv(history_path, index=False)
+    print("Training history saved to", history_path)
+
+    return history, model_path, tokenizer_path
+
+
+def plot_training_history(history, model_base_name, version, date):
+    # Plot the training history
+    if not history.history:
+        raise ValueError("The training history is empty. Ensure that the model training process was successful.")
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(history.history['accuracy'], label='Train Accuracy')
+    plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.title('Training and Validation Accuracy')
+    plt.legend()
+    accuracy_plot_path = f'images/{model_base_name}_accuracy_{version}_{date}.png'
+    plt.savefig(accuracy_plot_path)
+    plt.show()
+    print("Accuracy plot saved to", accuracy_plot_path)
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(history.history['loss'], label='Train Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title('Training and Validation Loss')
+    plt.legend()
+    loss_plot_path = f'images/{model_base_name}_loss_{version}_{date}.png'
+    plt.savefig(loss_plot_path)
+    plt.show()
+    print("Loss plot saved to", loss_plot_path)
