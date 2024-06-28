@@ -24,6 +24,10 @@ def train_model(processed_data_path, model_base_name="sentiment_model", version=
     data = pd.read_csv(processed_data_path)
     print(f"Data loaded: {data.shape[0]} rows, {data.shape[1]} columns")
 
+    # Use a subset of the data for faster training
+    data = data.sample(frac=0.1, random_state=42)
+    print(f"Data loaded: {data.shape[0]} rows, {data.shape[1]} columns")
+
     # Check if the dataset is empty
     if data.empty:
         raise ValueError("No data available. Please check the processed data.")
